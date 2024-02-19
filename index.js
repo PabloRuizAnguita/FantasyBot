@@ -8,10 +8,13 @@ const bot = new TelegramBot(token, { polling: true });
 
 bot.onText(/\/start/, (msg) => {
   const chatId = msg.chat.id;
-  bot.sendMessage(chatId, 'Puedes escoger entre una de estas opciones o utilizar help para ver los comandos para acceder a otra información.', {
+  //Envia mensaje al recibir el comando /start 
+  bot.sendMessage(chatId, 'Puedes escoger entre una de estas opciones.', {
     reply_markup: {
+      //Crea un teclado para poder escoger varias opciones desde ahí
       inline_keyboard: [
         [
+          //Este es el teclado.
           { text: 'Mercado Fantasy', callback_data: 'Mercado' },
           { text: 'Comparador de Jugadores', callback_data: 'Comparador' },
           { text: 'Bajas para esta semana', callback_data: 'Bajas' },
@@ -21,14 +24,16 @@ bot.onText(/\/start/, (msg) => {
     }
   });
 });
-
+//Se inicia cuando se pulsa el botón Mercado.
 bot.on('callback_query', (callbackQuery) => {
   const action = callbackQuery.data;
   const msg = callbackQuery.message;
   const chatId = msg.chat.id;
 
   if (action === 'Mercado') {
+    //URL de la pagina a la que te redirige.
     const url = 'https://www.analiticafantasy.com/fantasy-la-liga/mercado';
+    //Te saca un boton mas especifico dentro del botón Mercado, el cual te envía a la pagina
     bot.sendMessage(chatId, 'Pulsa el botón para dirigirte al mercado Fantasy:', {
       reply_markup: {
         inline_keyboard: [
